@@ -1,0 +1,24 @@
+{
+  "name": "@deal-scout/core",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "sync": "tsx src/sync-cli.ts",
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "drizzle-orm": "^0.45.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@deal-scout/scout",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "start": "tsx src/cli.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/nodemailer": "^8.0.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@deal-scout/core": "workspace:*",
+    "nodemailer": "^10.0.14",
+    "rss-parser": "^3.13.0",
+    "zod": "^4.6.5"
+  }
+}

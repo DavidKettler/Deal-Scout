@@ -1,0 +1,30 @@
+{
+  "name": "Your Name",
+  "location": { "city": "St. Louis", "state": "MO", "zip": "63101" },
+  "interests": ["home espresso", "trail running", "mechanical keyboards", "cast iron cookware"],
+  "brands_like": ["Breville", "Hoka", "Lodge"],
+  "brands_avoid": ["fast fashion", "dropshipped no-name electronics"],
+  "budget": { "default_max_usd": 300, "notes": "Will go higher for buy-it-for-life items" },
+  "sizes": { "shoe": "10.5 US", "shirt": "M" },
+  "purchase_history": [
+    "Bought an iPhone 11 in 2020",
+    "Used Wells Fargo checking 2015-2022",
+    "Owned a 2018 Honda Civic",
+    "Bought Similac formula 2021"
+  ],
+  "min_discount_pct": 25,
+  "max_items_per_section": 8,
+  "feeds": {
+    "deals": [
+      "https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=deals&searchin=first&rss=1",
+      "https://www.reddit.com/r/deals/.rss",
+      "https://www.reddit.com/r/buildapcsales/.rss"
+    ],
+    "samples": [
+      "https://www.reddit.com/r/freebies/.rss"
+    ],
+    "settlements": [
+      "https://topclassactions.com/category/lawsuit-settlements/open-lawsuit-settlements/feed/"
+    ]
+  }
+}

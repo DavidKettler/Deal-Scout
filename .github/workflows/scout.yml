@@ -1,0 +1,63 @@
+name: Nightly scout
+
+on:
+  schedule:
+    - cron: "0 2 * * *" # 02:00 UTC = 9pm CDT / 8pm CST
+  workflow_dispatch:
+
+permissions:
+  contents: write # push run files to the data branch
+
+concurrency:
+  group: scout
+  cancel-in-progress: false
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out data branch at data/sync
+        run: |
+          git config --global user.name "deal-scout bot"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin data >/dev/null; then
+            git fetch --depth=50 origin data
+            git worktree add -B data data/sync origin/data
+          else
+            git worktree add --orphan -b data data/sync
+          fi
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Run scout
+        run: pnpm scout
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
+          PROFILE_JSON: ${{ secrets.PROFILE_JSON }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+          DASHBOARD_URL: ${{ vars.DASHBOARD_URL }}
+
+      - name: Commit run to data branch
+        if: always()
+        working-directory: data/sync
+        run: |
+          git add runs seen.json 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -m "scout: $(date -u +%Y-%m-%dT%H:%MZ)"
+          # Local `pnpm sync` may have pushed status.json meanwhile; rebase and retry.
+          for i in 1 2 3; do
+            git push origin HEAD:data && exit 0
+            git pull --rebase origin data
+          done
+          exit 1
